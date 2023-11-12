@@ -20,7 +20,7 @@ const signUp = async (req, res) => {
         })
 
         await newUser.save();
-        res.status(200).json('user save successfully')
+        res.status(200).json('user saved successfully')
 
 
     } catch (error) {
@@ -34,7 +34,7 @@ const signIn = async (req, res) => {
     try {
         const emailPassed = req.body.email;
         const user = await User.findOne({ email: emailPassed });
-
+       
         if (!user) {
             res.status(401).json(`please enter the correct email, ${emailPassed} does not exist`);
         }
@@ -46,11 +46,9 @@ const signIn = async (req, res) => {
             res.status(401).json('Invalid password');
         }
 
-
-        const token = Jwt.sign({ id: user.id }, process.env.API_KEY, {
+        const token = Jwt.sign({ id: user.id }, 'shubhansu', {
             expiresIn: '1h'
         });
-
         res.status(200).json({
             user: {
                 id: user.id,
