@@ -23,22 +23,15 @@ router.get('/getPreferences', verifyToken, async (req, res) => {
 
 })
 
-router.patch('/edit', verifyToken, async (req, res) => {
+router.patch('./edit', verifyToken, async (req, res) => {
     const userId = req.user.id;
     const dataToBeUpdated = req.body;
 
     try {
-        const userUpdated = await User.findByIdAndUpdate(userId, dataToBeUpdated, { new: true })
-        const updatedUser= User.findById(userId).then((user)=>{
-            console.log(user.preferences);
-        }).catch(error=>{
-            console.error(error);
-        })
-        
+        const userUpdated = User.findByIdAndUpdate(userId, dataToBeUpdated, { new: true })
         if (!userUpdated) return res.status(404).send('could not perform the updation to the user, user not found')
 
         return res.status(200).send('updated the record successfully');
-
 
     } catch (error) {
        return  res.status(500).json('please try again, ISE')
